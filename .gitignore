@@ -1,4 +1,9 @@
 .idea
-jormungandr/*
+jormungandr
 !jormungandr/.env.example
-!jormungandr/.install.sh
+!jormungandr/install.sh
+!jormungandr/init.sh
+!jormungandr/commands.sh
+!jormungandr/config.example.yaml
+
+
