@@ -4,6 +4,7 @@ jormungandr
 !jormungandr/install.sh
 !jormungandr/init.sh
 !jormungandr/commands.sh
+!jormungandr/sendtiptopooltools.sh
 !jormungandr/config.example.yaml
 
 
