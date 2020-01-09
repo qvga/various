@@ -1,0 +1,38 @@
+version: '3'
+
+services:
+  dev-maria-db:
+    image: mariadb:10.1
+    ports:
+      - "3388:3306"
+    restart: "no"
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - TZ=Europe/Stockholm
+    command: --max-allowed-packet=64M
+    volumes:
+      - ./sqldumps:/docker-entrypoint-initdb.d
+    container_name: dev-maria-db
+    logging:
+      options:
+        max-size: "200k"
+        max-file: "10"
+    networks:
+      - dev
+  dev-phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    labels:
+      - "traefik.http.routers.phpmyadmin.rule=Host(`phpmyadmin.localhost`)"
+    links:
+      - dev-maria-db:db
+    environment:
+      - PMA_HOST=db
+      - PMA_USER=root
+      - PMA_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    networks:
+      - dev
+
+
+networks:
+  dev:
+    external: true
