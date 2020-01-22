@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  mysql:
+    image: mysql:5.7
+    ports:
+      - 127.0.0.1:3306:3306
+    restart: "always"
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - TZ=Europe/Stockholm
+    command: --max-allowed-packet=64M --ft-min-word-len=3 --event_scheduler=ON --innodb_buffer_pool_size=1024MB
+    volumes:
+      - ./mysql_data:/var/lib/mysql:Z
+    container_name: mysql
+    logging:
+      options:
+        max-size: "200k"
+        max-file: "10"
+    networks:
+      - database
+networks:
+  database:
+    external: true
+

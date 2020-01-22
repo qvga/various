@@ -1,3 +1,4 @@
+/**/.env
 .idea
 jormungandr
 !jormungandr/.env.example
@@ -6,5 +7,8 @@ jormungandr
 !jormungandr/commands.sh
 !jormungandr/sendtiptopooltools.sh
 !jormungandr/config.example.yaml
-
+dev-maria-db/*.sh
+prod-reverseproxy/access.log
+prod-reverseproxy/acme.json
+prod-mysql/mysql_data
 
