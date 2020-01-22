@@ -9,6 +9,6 @@ echo "IP: ${newip}"
 
 if [[ "$newip" != "$oldip" ]]; then
    echo "NEW IP: ${newip}"
-   echo "${oldip} -> ${newip}" | mail -s '[IP-ALERT] IP changed' -r "$MAILFROM" "$MAILTO"
+   echo "${oldip} -> ${newip}" | mail -s '[IP-ALERT] IP changed' "$MAILTO"
    echo "$newip" > ip.txt
 fi
