@@ -1,0 +1,21 @@
+version: '3'
+services:
+  registry:
+    image: registry:2
+    restart: unless-stopped
+    volumes:
+      - ./registry:/var/lib/registry
+      - ./usersfile:/app/usersfile
+    container_name: registry
+    labels:
+      - "traefik.http.routers.registry.rule=Host(`${HOST}`)"
+      - "traefik.http.middlewares.registry.basicauth.usersfile=/app/usersfile"
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
+
+# generate basic auth entry in usersfile
+# docker run --rm -ti xmartlabs/htpasswd username password >> usersfile

@@ -16,3 +16,9 @@ services:
       options:
         max-size: "200k"
         max-file: "10"
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
