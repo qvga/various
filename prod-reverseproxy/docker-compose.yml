@@ -3,7 +3,16 @@ version: '3'
 services:
   reverse-proxy:
     image: traefik:v2.1
-    command: --certificatesResolvers.le.acme.email=${EMAIL} --certificatesResolvers.le.acme.tlsChallenge.entryPoint=web --certificatesResolvers.le.acme.storage="/app/acme.json"
+    command:
+      - "--entrypoints.web.address=:80"
+      #- "--log.level=DEBUG"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.mytlschallenge.acme.tlschallenge=true"
+      - "--certificatesresolvers.mytlschallenge.acme.email=${EMAIL}"
+      - "--certificatesresolvers.mytlschallenge.acme.storage=/app/acme.json"
     ports:
       - "80:80"
       - "443:443"
@@ -11,7 +20,6 @@ services:
     container_name: reverse-proxy
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ./traefik.toml:/etc/traefik/traefik.toml
       - ./:/app
     logging:
       options:
