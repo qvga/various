@@ -5,20 +5,21 @@ services:
     restart: unless-stopped
     volumes:
       - ./registry:/var/lib/registry
-      - ./usersfile:/app/usersfile
     container_name: registry
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.registry.rule=Host(`${HOST}`)"
       - "traefik.http.routers.registry.entrypoints=websecure"
       - "traefik.http.routers.registry.tls.certresolver=mytlschallenge"
-      - "traefik.http.middlewares.registry.basicauth.usersfile=/app/usersfile"
+      - "traefik.http.middlewares.registry.basicauth.users=${USERS}"
     networks:
       - proxy
 
 networks:
   proxy:
     external: true
+
+# echo $(htpasswd -nb user password) | sed -e s/\\$/\\$\\$/g
 
 # generate basic auth entry in usersfile
 # docker run --rm -ti xmartlabs/htpasswd username password >> usersfile
