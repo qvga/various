@@ -9,9 +9,9 @@ services:
     container_name: registry
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.whoami.rule=Host(`whoami.mydomain.com`)"
-      - "traefik.http.routers.whoami.entrypoints=websecure"
-      - "traefik.http.routers.whoami.tls.certresolver=mytlschallenge"
+      - "traefik.http.routers.registry.rule=Host(`${HOST}`)"
+      - "traefik.http.routers.registry.entrypoints=websecure"
+      - "traefik.http.routers.registry.tls.certresolver=mytlschallenge"
       - "traefik.http.middlewares.registry.basicauth.usersfile=/app/usersfile"
     networks:
       - proxy
