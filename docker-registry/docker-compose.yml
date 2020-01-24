@@ -8,8 +8,10 @@ services:
       - ./usersfile:/app/usersfile
     container_name: registry
     labels:
-      - "traefik.http.routers.registry.rule=Host(`${HOST}`)"
-      - "traefik.http.middlewares.registry.basicauth.usersfile=/app/usersfile"
+      - traefik.http.routers.registry.rule=Host(`${HOST}`)
+      - traefik.http.routers.blog.tls=true
+      - traefik.http.routers.blog.tls.certresolver=le
+      - traefik.http.middlewares.registry.basicauth.usersfile=/app/usersfile
     networks:
       - proxy
 
