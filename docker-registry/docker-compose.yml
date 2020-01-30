@@ -11,7 +11,8 @@ services:
       - "traefik.http.routers.registry.rule=Host(`${HOST}`)"
       - "traefik.http.routers.registry.entrypoints=websecure"
       - "traefik.http.routers.registry.tls.certresolver=mytlschallenge"
-      - "traefik.http.middlewares.registry.basicauth.users=${USERS}"
+      - "traefik.http.middlewares.registry-auth.basicauth.users=${USERS}"
+      - "traefik.http.routers.registry.middlewares=registry-auth"
     networks:
       - proxy
 
