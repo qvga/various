@@ -7,7 +7,7 @@ services:
       - 127.0.0.1:3306:3306
     restart: "always"
     environment:
-#      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - TZ=Europe/Stockholm
     command: --max-allowed-packet=64M --ft-min-word-len=3 --event_scheduler=ON --innodb_buffer_pool_size=8GB
     volumes:
