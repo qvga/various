@@ -7,7 +7,7 @@ OS=$(uname -s | awk '{print tolower($0)}')
 
 echo "Latest version is $LATEST_JORVERSION, your version is $INSTALLED_JORVERSION"
 
-JOR_ARCHIVE="jormungandr-$LATEST_JORVERSION-$ARCH-unknown-$OS-gnu.tar.gz"
+JOR_ARCHIVE="jormungandr-$LATEST_JORVERSION-$ARCH-unknown-$OS-gnu-generic.tar.gz"
 URL="https://github.com/input-output-hk/jormungandr/releases/download/$LATEST_JORVERSION/$JOR_ARCHIVE"
 
 if [ "$LATEST_JORVERSION" != "$INSTALLED_JORVERSION" ]; then
