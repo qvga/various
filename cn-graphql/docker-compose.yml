@@ -32,12 +32,12 @@ services:
     command: [/opt/cardano/cnode/files
         "--host", "0.0.0.0",
         "--node-socket", "/ipc/node0.socket",
-        "--node-config", "/config/config.json"
+        "--node-config", "/node-config/config.json"
     ]
     volumes:
       - ./ogmios-config:/config
       - /opt/cardano/cnode/sockets:/ipc
-      - /opt/cardano/cnode/files:/config
+      - /opt/cardano/cnode/files:/node-config
     ports:
       - "1337:1337"
 
