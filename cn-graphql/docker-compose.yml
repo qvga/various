@@ -24,10 +24,10 @@ services:
 
   ogmios:
     image: cardanosolutions/ogmios:latest-mainnet
-    build:
-      context: .
-      target: ogmios
-      cache_from: [cardanosolutions/ogmios:latest]
+#    build:
+#      context: ..
+#      target: ogmios
+#      cache_from: [cardanosolutions/ogmios:latest]
     restart: on-failure
     command: [/opt/cardano/cnode/files
         "--host", "0.0.0.0",
