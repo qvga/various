@@ -2,11 +2,14 @@ version: '3'
 
 services:
   reverse-proxy:
-    image: traefik:v2.4
+    image: traefik:v2.11.31
+    container_name: reverse-proxy
     command:
+      - --accesslog=true
       - --api.insecure=true
       - --providers.docker
       - --log.level=DEBUG
+      - --providers.docker.exposedbydefault=false
     ports:
       - "80:80"
       - "8080:8080"
@@ -18,16 +21,11 @@ services:
         max-file: "10"
     networks:
       - dev
+
     restart: always
-
-
-  whoami:
-    image: containous/whoami
-    labels:
-      - "traefik.http.routers.whoami.rule=Host(`whoami.localhost`)"
-    networks:
-      - dev
 
 networks:
   dev:
     external: true
+#  hb_network:
+#    external: true
