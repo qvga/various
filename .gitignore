@@ -12,3 +12,4 @@ prod-reverseproxy/access.log
 prod-reverseproxy/acme.json
 prod-mysql/mysql_data
 
+/dev-reverseproxy/letsencrypt/

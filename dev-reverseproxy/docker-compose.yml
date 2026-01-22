@@ -7,15 +7,24 @@ services:
     command:
       - --accesslog=true
       - --api.insecure=true
-      - --providers.docker
-      - --log.level=DEBUG
+      - --providers.docker=true
+      - --log.level=INFO
       - --providers.docker.exposedbydefault=false
+      - --entrypoints.web.address=:80
+      - --entrypoints.websecure.address=:443
+      - --entrypoints.websecure.http.tls=true
+      - --entrypoints.websecure.http.tls.certresolver=le
+      - --certificatesresolvers.le.acme.email=${LETSENCRYPT_EMAIL}
+      - --certificatesresolvers.le.acme.storage=/letsencrypt/acme.json
+#      - --certificatesresolvers.le.acme.httpchallenge=true
+      - --certificatesresolvers.le.acme.httpchallenge.entrypoint=web
     ports:
       - "80:80"
       - "443:443"
       - "127.0.0.1:8080:8080"
     volumes :
       - /var/run/docker.sock:/var/run/docker.sock
+      - ./letsencrypt:/letsencrypt
     logging:
       options:
         max-size: "200k"
@@ -25,6 +34,47 @@ services:
 
     restart: always
 
+  # SAMPLE TEMPLATE: client-facing service with local + external hostnames.
+  # Copy/modify for each service you want to expose.
+  #
+  # sample-app:
+  #   image: traefik/whoami:v1.10.1
+  #   container_name: sample-app
+  #   networks:
+  #     - dev
+  #   labels:
+  #     - "traefik.enable=true"
+  #     # Local dev access (no TLS)
+  #     - "traefik.http.routers.sample-local.rule=Host(`sample.localhost`)"
+  #     - "traefik.http.routers.sample-local.entrypoints=web"
+  #     # External access (TLS via Let's Encrypt)
+  #     - "traefik.http.routers.sample-external.rule=Host(`client1.asldkflkjsldkfj.example.com`)"
+  #     - "traefik.http.routers.sample-external.entrypoints=websecure"
+  #     - "traefik.http.routers.sample-external.tls=true"
+  #     - "traefik.http.routers.sample-external.tls.certresolver=le"
+  #     - "traefik.http.routers.sample-external.middlewares=sample-secure-headers"
+  #     # External HTTP -> HTTPS redirect
+  #     - "traefik.http.routers.sample-external-http.rule=Host(`client1.asldkflkjsldkfj.example.com`)"
+  #     - "traefik.http.routers.sample-external-http.entrypoints=web"
+  #     - "traefik.http.routers.sample-external-http.middlewares=redirect-to-https"
+  #     - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+  #     # Optional: basic auth for external demos (user:pass hash)
+  #     # - "traefik.http.middlewares.sample-auth.basicauth.users=demo:$$apr1$$changeme$$xxxxxxxxxxxxxxxxxxxxxx/"
+  #     # - "traefik.http.routers.sample-external.middlewares=sample-secure-headers,sample-auth"
+  #     # Security headers middleware (safe defaults)
+  #     - "traefik.http.middlewares.sample-secure-headers.headers.frameDeny=true"
+  #     - "traefik.http.middlewares.sample-secure-headers.headers.contentTypeNosniff=true"
+  #     - "traefik.http.middlewares.sample-secure-headers.headers.browserXssFilter=true"
+  #     - "traefik.http.middlewares.sample-secure-headers.headers.referrerPolicy=no-referrer"
+  #     - "traefik.http.middlewares.sample-secure-headers.headers.forceSTSHeader=true"
+  #     - "traefik.http.middlewares.sample-secure-headers.headers.stsSeconds=15552000"
+  #     - "traefik.http.middlewares.sample-secure-headers.headers.stsIncludeSubdomains=true"
+  #     - "traefik.http.middlewares.sample-secure-headers.headers.stsPreload=true"
+
+
+  #  htpasswd -nbB demo 'your-password'
+  #
+  #  That prints demo:$2y$... — put it in the label, but double each $ in docker‑compose (e.g., $2y$ → $$2y$$).
 networks:
   dev:
     external: true
